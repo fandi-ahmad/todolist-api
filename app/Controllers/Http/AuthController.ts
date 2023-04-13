@@ -3,8 +3,8 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from "App/Models/User";
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 
-export default class RegistersController {
-    public async index({request, response}:HttpContextContract) {
+export default class AuthController {
+    public async register({request, response}:HttpContextContract) {
         const validation = schema.create({
             email: schema.string([
                 rules.email(),
@@ -25,5 +25,13 @@ export default class RegistersController {
             password: (await data).password
         })
         return response.created(user)
+    }
+
+    public async login({request, auth}:HttpContextContract) {
+        const email = request.input('email')
+        const password = request.input('password')
+        const token = await auth.attempt(email, password)
+
+        return token.toJSON()
     }
 }
