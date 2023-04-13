@@ -24,7 +24,12 @@ Route.get('/', 'HomeController.index')
 
 // fungsi group supaya mengelompokan api dan menambahkan /api di awal sebelum nama route
 Route.group(() => {
-  Route.get('/todo', 'TodosController.index')
-  Route.post('/todo', 'TodosController.store')
-  Route.patch('/todo/:id', 'TodosController.update')
+
+  Route.group(() => {
+    Route.get('/todo', 'TodosController.index')
+    Route.post('/todo', 'TodosController.store')
+    Route.patch('/todo/:id', 'TodosController.update')
+  }).middleware('auth') 
+
+  Route.post('/register', 'RegistersController.index')
 }).prefix('api')
